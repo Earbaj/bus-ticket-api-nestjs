@@ -19,4 +19,7 @@ export class CreateUserDto {
 
   @IsOptional()
   age?: number;
+
+  @IsNotEmpty()
+  role: string;
 }
