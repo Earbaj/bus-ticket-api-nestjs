@@ -10,6 +10,9 @@ import { TicketsModule } from './tickets/tickets.module';
 import { PaymentModule } from './payment/payment.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -24,6 +27,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
+    ThrottlerModule.forRoot({
+      throttlers: [{ 
+        name: 'short',
+        ttl: 60000, 
+        limit: 5 
+      }],
+    }),
     AuthModule,
     UsersModule,
     BusesModule,
@@ -33,6 +43,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     NotificationsModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard, // This applies rate limiting globally
+    },
+  ],
 })
 export class AppModule {}

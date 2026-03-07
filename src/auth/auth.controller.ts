@@ -1,6 +1,7 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
@@ -8,6 +9,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
+  @UseGuards(ThrottlerGuard)
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto.email, dto.password);
   }

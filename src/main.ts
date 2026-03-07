@@ -11,7 +11,9 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
+      whitelist: true, // Strip unwanted properties
+      forbidNonWhitelisted: true, // Throw error on unwanted properties
+      transform: true, // Transform payload to DTO instance
     }),
   );
   // Get ConfigService after app is created
