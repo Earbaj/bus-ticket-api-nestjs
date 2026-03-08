@@ -1,0 +1,17 @@
+import { Module } from '@nestjs/common';
+import { OperatorsController } from './operators.controller';
+import { OperatorsService } from './operators.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Operator, OperatorSchema } from './schemas/operator.schema';
+
+@Module({
+  imports: [
+    MongooseModule.forFeature([
+      { name: Operator.name, schema: OperatorSchema },
+    ]),
+  ],
+  controllers: [OperatorsController],
+  providers: [OperatorsService],
+  exports: [OperatorsService]
+})
+export class OperatorsModule {}

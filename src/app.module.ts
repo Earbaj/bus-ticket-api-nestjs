@@ -13,6 +13,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
+import { OperatorsModule } from './operators/operators.module';
 
 @Module({
   imports: [
@@ -31,16 +32,17 @@ import { ThrottlerGuard } from '@nestjs/throttler';
       throttlers: [{ 
         name: 'short',
         ttl: 60000, 
-        limit: 5 
+        limit: 5  
       }],
     }),
     AuthModule,
     UsersModule,
-    BusesModule,
+    BusesModule, 
     SeatsModule,
     TicketsModule,
     PaymentModule,
-    NotificationsModule
+    NotificationsModule,
+    OperatorsModule
   ],
   controllers: [AppController],
   providers: [AppService,
